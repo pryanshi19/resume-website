@@ -1,112 +1,628 @@
-/* Reset */
+/* ==========================================================================
+   Priyanshi Saini — Resume Website
+   Stylesheet organised as:
+   1. Design tokens (CSS variables)   2. Reset & base
+   3. Navigation bar                  4. Hero / header
+   5. Layout & section cards          6. Components
+   7. Footer                          8. Responsive rules
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DESIGN TOKENS — one place to control the whole colour palette
+   ========================================================================== */
+:root {
+    --navy: #0e2340;
+    --navy-soft: #1c3a63;
+    --accent: #2f6feb;
+    --accent-dark: #1d54c4;
+    --accent-tint: #eaf1fe;
+
+    --ink: #17233a;
+    --body: #4a566b;
+    --muted: #7b869a;
+
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --line: #e3e8f0;
+
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow-sm: 0 1px 2px rgba(14, 35, 64, .06);
+    --shadow-md: 0 10px 30px rgba(14, 35, 64, .07);
+    --max-width: 1080px;
+    --transition: .25s ease;
+}
+
+
+/* ==========================================================================
+   2. RESET & BASE (universal + element selectors)
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #fdfbfb, #ebedee);
-    color: #333;
-}
-
-/* Header */
-header {
-    text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-    color: white;
-}
-
-header h1 {
-    font-size: 40px;
-    letter-spacing: 1px;
-}
-
-header p {
-    opacity: 0.9;
-}
-
-/* Navbar */
-nav {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    padding: 15px;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-}
-
-nav a {
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #a18cd1;
-}
-
-/* Sections */
-section {
-    width: 80%;
-    margin: 40px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    transition: 0.3s;
-}
-
-/* Hover effect for cards */
-section:hover {
-    transform: translateY(-5px);
-}
-
-/* Headings */
-h2 {
-    margin-bottom: 15px;
-    color: #6c63ff;
-}
-
-/* Skills */
-ul {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-ul li {
-    background: #f1f1ff;
-    padding: 8px 15px;
-    border-radius: 20px;
-    list-style: none;
-}
-
-/* Button */
-button {
-    display: block;
-    margin: 40px auto;
-    padding: 12px 25px;
-    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: scale(1.05);
-}
-
-/* Smooth scroll */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--body);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    line-height: 1.25;
+    letter-spacing: -.01em;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.3rem); }
+h2 { font-size: 1.85rem; margin-bottom: 1rem; }
+h3 { font-size: 1.1rem; }
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+a:hover { color: var(--accent-dark); }
+
+p { margin-bottom: .9rem; }
+
+ul, ol { list-style: none; }
+
+
+/* ==========================================================================
+   3. NAVIGATION BAR — flexbox + sticky positioning
+   ========================================================================== */
+#navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    max-width: 100%;
+    padding: 14px 40px;
+    background-color: rgba(255, 255, 255, .88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+}
+
+.nav-logo {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -.02em;
+}
+
+.nav-logo .dot { color: var(--accent); }
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    position: relative;
+    font-size: .93rem;
+    font-weight: 500;
+    color: var(--body);
+    padding: 4px 0;
+}
+
+/* Animated underline drawn with a pseudo-element */
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width var(--transition);
+}
+
+.nav-links a:hover { color: var(--navy); }
+.nav-links a:hover::after { width: 100%; }
+
+
+/* ==========================================================================
+   4. HERO / HEADER
+   ========================================================================== */
+#hero {
+    position: relative;
+    overflow: hidden;
+    padding: 84px 40px 96px;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color: #dfe7f4;
+}
+
+/* Soft decorative glow, positioned absolutely behind the content */
+#hero::before {
+    content: "";
+    position: absolute;
+    top: -140px;
+    right: -120px;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 111, 235, .45), transparent 65%);
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 56px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.hero-text { flex: 1 1 460px; }
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 5px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #cfe0ff;
+    background-color: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 999px;
+}
+
+#hero h1 { color: #ffffff; }
+
+#hero h1 .accent { color: #7aa8ff; }
+
+.tagline {
+    max-width: 480px;
+    margin-top: 16px;
+    font-size: 1.05rem;
+    color: #c3d0e5;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+/* Profile card floating beside the intro */
+.hero-card {
+    flex: 0 0 290px;
+    padding: 30px 26px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: var(--radius);
+    backdrop-filter: blur(6px);
+}
+
+.avatar {
+    display: grid;
+    place-items: center;
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 16px;
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--accent), #7aa8ff);
+    border-radius: 50%;
+}
+
+.hero-card h3 { color: #ffffff; }
+
+.hero-card .muted { color: #9fb2cd; font-size: .9rem; }
+
+.hero-facts {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    text-align: left;
+}
+
+.hero-facts li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: .87rem;
+}
+
+.hero-facts span { color: #9fb2cd; }
+.hero-facts strong { color: #ffffff; font-weight: 600; }
+
+
+/* ==========================================================================
+   5. LAYOUT & SECTION CARDS
+   ========================================================================== */
+main {
+    position: relative;   /* keeps the cards above the hero's overlap */
+    z-index: 2;
+    max-width: var(--max-width);
+    margin: -48px auto 0;
+    padding: 0 40px 60px;
+}
+
+.card {
+    margin-bottom: 28px;
+    padding: 40px;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.section-label {
+    margin-bottom: 6px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* Short rule under every section heading */
+.card h2::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    margin-top: 12px;
+    background-color: var(--accent);
+    border-radius: 2px;
+}
+
+.lead {
+    font-size: 1.05rem;
+    color: var(--ink);
+}
+
+.muted { color: var(--muted); }
+
+.sub-heading {
+    margin: 28px 0 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+
+/* ==========================================================================
+   6. COMPONENTS
+   ========================================================================== */
+
+/* --- Buttons ------------------------------------------------------------ */
+.btn {
+    display: inline-block;
+    padding: 11px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: .92rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition),
+                transform var(--transition), border-color var(--transition);
+}
+
+.btn-solid {
+    color: #ffffff;
+    background-color: var(--accent);
+}
+
+.btn-solid:hover {
+    color: #ffffff;
+    background-color: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+.btn-ghost {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, .35);
+}
+
+.btn-ghost:hover {
+    color: var(--navy);
+    background-color: #ffffff;
+}
+
+.btn-outline {
+    padding: 8px 18px;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline:hover {
+    color: #ffffff;
+    background-color: var(--accent);
+}
+
+/* --- Stat row (flexbox) ------------------------------------------------- */
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.stat {
+    flex: 1 1 150px;
+    padding: 16px 18px;
+    background-color: var(--accent-tint);
+    border-radius: var(--radius-sm);
+}
+
+.stat strong {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+}
+
+.stat span {
+    font-size: .82rem;
+    color: var(--body);
+}
+
+/* --- Education timeline (positioning) ----------------------------------- */
+.timeline {
+    position: relative;
+    margin-top: 8px;
+    padding-left: 26px;
+    border-left: 2px solid var(--line);
+}
+
+.timeline li { padding: 4px 0 22px; }
+
+.timeline li:last-child { padding-bottom: 0; }
+
+.timeline li::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    width: 14px;
+    height: 14px;
+    margin-top: 7px;
+    background-color: var(--accent);
+    border: 3px solid var(--surface);
+    border-radius: 50%;
+}
+
+.timeline .meta {
+    margin: 2px 0 6px;
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--accent);
+}
+
+/* --- Skills grid -------------------------------------------------------- */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-top: 8px;
+}
+
+.skill {
+    padding: 20px;
+    background-color: #fafbfd;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition), background-color var(--transition);
+}
+
+.skill:hover {
+    background-color: var(--surface);
+    border-color: var(--accent);
+}
+
+.skill p {
+    margin: 6px 0 14px;
+    font-size: .88rem;
+}
+
+/* Proficiency bar */
+.bar {
+    height: 6px;
+    background-color: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #7aa8ff);
+    border-radius: 999px;
+}
+
+/* --- Tag list (flexbox) ------------------------------------------------- */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-list li {
+    padding: 6px 14px;
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--navy);
+    background-color: var(--accent-tint);
+    border-radius: 999px;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.tag-list li:hover {
+    color: #ffffff;
+    background-color: var(--accent);
+}
+
+/* --- Projects grid ------------------------------------------------------ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background-color: #fafbfd;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.project:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.badge {
+    align-self: flex-start;
+    margin-bottom: 10px;
+    padding: 4px 11px;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    background-color: var(--accent-tint);
+    border-radius: 999px;
+}
+
+.project p { font-size: .9rem; }
+
+.project .stack {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: .8rem;
+    color: var(--muted);
+}
+
+.link { font-size: .88rem; font-weight: 600; }
+
+/* --- Contact ------------------------------------------------------------ */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 22px 0 26px;
+}
+
+.contact-item {
+    display: block;
+    padding: 18px 20px;
+    color: var(--ink);
+    background-color: #fafbfd;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition), background-color var(--transition);
+}
+
+a.contact-item:hover {
+    color: var(--ink);
+    background-color: var(--accent-tint);
+    border-color: var(--accent);
+}
+
+.contact-item strong {
+    font-size: .93rem;
+    word-break: break-word;
+}
+
+.contact-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.greet-message {
+    margin-top: 14px;
+    font-weight: 500;
+    color: var(--accent-dark);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .35s ease, transform .35s ease;
+}
+
+.greet-message.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+footer {
+    padding: 34px 40px;
+    text-align: center;
+    color: #b8c5da;
+    background-color: var(--navy);
+}
+
+footer p { margin-bottom: 2px; font-size: .88rem; }
+
+footer .muted { color: #7d8ea9; font-size: .8rem; }
+
+
+/* ==========================================================================
+   8. RESPONSIVE RULES
+   ========================================================================== */
+@media (max-width: 900px) {
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 34px; }
+    .hero-text { flex: 1 1 auto; }
+    .hero-card { width: 100%; flex-basis: auto; }
+    #navbar .btn-outline { display: none; }
+}
+
+@media (max-width: 640px) {
+    #navbar { flex-wrap: wrap; gap: 10px; padding: 12px 20px; }
+    .nav-links { gap: 18px; font-size: .85rem; }
+    #hero { padding: 56px 20px 76px; }
+    main { padding: 0 20px 44px; }
+    .card { padding: 26px 22px; }
+    footer { padding: 28px 20px; }
 }
